@@ -1,0 +1,11 @@
+aiogram==3.13.1
+alembic==1.13.2
+APScheduler==3.10.4
+asyncpg==0.29.0
+fastapi==0.115.2
+psycopg[binary]==3.2.13
+pydantic-settings==2.5.2
+python-json-logger==2.0.7
+redis==5.1.1
+SQLAlchemy==2.0.35
+uvicorn[standard]==0.30.6
