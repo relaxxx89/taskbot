@@ -10,7 +10,7 @@ from app.services.user_board_service import bootstrap_user_board
 @pytest.mark.asyncio
 async def test_export_markdown_and_csv(session_factory) -> None:
     async with session_factory() as session:
-        user, board, _ = await bootstrap_user_board(session, telegram_id=777, tz_default="Europe/Moscow")
+        user, board, _, _ = await bootstrap_user_board(session, telegram_id=777, tz_default="Europe/Moscow")
         await create_task(
             session,
             board_id=board.id,

@@ -107,6 +107,20 @@ async def edit_task_title(session: AsyncSession, board_id: int, task_id: int, ne
     return task
 
 
+async def update_task_description(session: AsyncSession, board_id: int, task_id: int, description: str) -> Task:
+    task = await get_task(session, board_id, task_id)
+    task.description = description.strip()
+    await session.flush()
+    return task
+
+
+async def update_task_priority(session: AsyncSession, board_id: int, task_id: int, priority: int) -> Task:
+    task = await get_task(session, board_id, task_id)
+    task.priority = max(1, min(priority, 3))
+    await session.flush()
+    return task
+
+
 async def delete_task(session: AsyncSession, board_id: int, task_id: int) -> None:
     task = await get_task(session, board_id, task_id)
     await session.delete(task)

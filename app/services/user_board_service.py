@@ -13,16 +13,16 @@ _DEFAULT_COLUMNS = [
 ]
 
 
-async def get_or_create_user(session: AsyncSession, telegram_id: int, tz_default: str) -> User:
+async def get_or_create_user(session: AsyncSession, telegram_id: int, tz_default: str) -> tuple[User, bool]:
     result = await session.execute(select(User).where(User.telegram_id == telegram_id))
     user = result.scalar_one_or_none()
     if user:
-        return user
+        return user, False
 
     user = User(telegram_id=telegram_id, timezone=tz_default)
     session.add(user)
     await session.flush()
-    return user
+    return user, True
 
 
 async def get_or_create_board(session: AsyncSession, user_id: int) -> Board:
@@ -55,11 +55,11 @@ async def bootstrap_user_board(
     session: AsyncSession,
     telegram_id: int,
     tz_default: str,
-) -> tuple[User, Board, list[BoardColumn]]:
-    user = await get_or_create_user(session, telegram_id, tz_default)
+) -> tuple[User, Board, list[BoardColumn], bool]:
+    user, created = await get_or_create_user(session, telegram_id, tz_default)
     board = await get_or_create_board(session, user.id)
     columns = await ensure_default_columns(session, board.id)
-    return user, board, columns
+    return user, board, columns, created
 
 
 async def list_columns(session: AsyncSession, board_id: int) -> list[BoardColumn]:

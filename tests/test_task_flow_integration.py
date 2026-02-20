@@ -12,7 +12,7 @@ from app.services.user_board_service import bootstrap_user_board, list_columns
 @pytest.mark.asyncio
 async def test_create_move_done_today_overdue(session_factory) -> None:
     async with session_factory() as session:
-        user, board, columns = await bootstrap_user_board(session, telegram_id=42, tz_default="Europe/Moscow")
+        user, board, columns, _ = await bootstrap_user_board(session, telegram_id=42, tz_default="Europe/Moscow")
         doing_col = columns[2]
 
         now_local = datetime.now(ZoneInfo("Europe/Moscow"))

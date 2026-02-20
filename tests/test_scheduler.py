@@ -14,7 +14,7 @@ from app.services.user_board_service import bootstrap_user_board
 @pytest.mark.asyncio
 async def test_reminders_are_sent_once(session_factory, bot_stub) -> None:
     async with session_factory() as session:
-        _, board, _ = await bootstrap_user_board(session, telegram_id=999, tz_default="UTC")
+        _, board, _, _ = await bootstrap_user_board(session, telegram_id=999, tz_default="UTC")
         due_at = datetime.now(UTC) + timedelta(minutes=30)
         task = await create_task(
             session,
